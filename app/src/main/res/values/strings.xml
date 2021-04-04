@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Images</string>
+    <string name="image">Image</string>
+    <string name="likes">%1$d likes</string>
+    <string name="by">By %1$s</string>
+    <string name="retry">Retry</string>
+</resources>

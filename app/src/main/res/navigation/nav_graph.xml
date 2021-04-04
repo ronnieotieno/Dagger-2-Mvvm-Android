@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/imagesListFragment">
+
+    <fragment
+        android:id="@+id/imagesListFragment"
+        android:name="dev.ronnie.imageloaderdagger2.presentation.fragments.ImagesListFragment"
+        android:label="ImagesListFragment">
+        <action
+            android:id="@+id/to_singleImageFragment"
+            app:destination="@id/singleImageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/singleImageFragment"
+        android:name="dev.ronnie.imageloaderdagger2.presentation.fragments.SingleImageFragment"
+        android:label="SingleImageFragment">
+
+        <argument
+            android:name="image"
+            app:argType="dev.ronnie.imageloaderdagger2.data.model.ImagesResponse"
+            app:nullable="false" />
+
+    </fragment>
+</navigation>
