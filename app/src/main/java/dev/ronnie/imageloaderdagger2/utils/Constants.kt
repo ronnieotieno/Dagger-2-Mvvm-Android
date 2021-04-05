@@ -7,4 +7,5 @@ package dev.ronnie.imageloaderdagger2.utils
 
 const val STARTING_PAGE = 1
 const val LOAD_SIZE = 25
+const val PREF_NAME = "last_query"
 

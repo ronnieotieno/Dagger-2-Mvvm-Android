@@ -1,11 +1,13 @@
 package dev.ronnie.imageloaderdagger2.presentation.fragments
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -16,10 +18,10 @@ import androidx.paging.LoadState
 import dagger.android.support.DaggerFragment
 import dev.ronnie.imageloaderdagger2.R
 import dev.ronnie.imageloaderdagger2.data.model.ImagesResponse
-import dev.ronnie.imageloaderdagger2.databinding.FragmentImagesListBinding
+import dev.ronnie.imageloaderdagger2.databinding.FragmentSearchBinding
 import dev.ronnie.imageloaderdagger2.presentation.adapters.ImagesAdapter
 import dev.ronnie.imageloaderdagger2.presentation.adapters.LoadingStateAdapter
-import dev.ronnie.imageloaderdagger2.presentation.viewmodels.ImagesListViewModel
+import dev.ronnie.imageloaderdagger2.presentation.viewmodels.SearchViewModel
 import dev.ronnie.imageloaderdagger2.utils.toast
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -28,18 +30,17 @@ import javax.inject.Inject
 
 
 /**
- *created by Ronnie Otieno on 03-Apr-21.
+ *created by Ronnie Otieno on 05-Apr-21.
  **/
-class ImagesListFragment : DaggerFragment(R.layout.fragment_images_list) {
+class SearchFragment : DaggerFragment(R.layout.fragment_search) {
+
+    private var job: Job? = null
+
+    private var hasInitiatedInitialCall = false
+    private lateinit var binding: FragmentSearchBinding
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private var hasInitiatedInitialCall = false
-
-    private lateinit var binding: FragmentImagesListBinding
-
-    private var job: Job? = null
 
     private val adapter =
         ImagesAdapter { imagesResponse, imageView ->
@@ -49,35 +50,68 @@ class ImagesListFragment : DaggerFragment(R.layout.fragment_images_list) {
             )
         }
 
-    private val viewModel: ImagesListViewModel by viewModels {
+    private val viewModel: SearchViewModel by viewModels {
         viewModelFactory
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentImagesListBinding.bind(view)
-        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar);
-        setHasOptionsMenu(true)
+
+        binding = FragmentSearchBinding.bind(view)
+        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
         setAdapter()
+        setSearchView()
+        binding.searchView.requestFocus()
 
         //prevents the method being called again onbackpressed pressed.
         if (!hasInitiatedInitialCall) {
-            getImages()
+            viewModel.currentQuery()?.let { searchImage(it); binding.searchView.setText(it) }
             hasInitiatedInitialCall = true
         }
 
     }
 
-    private fun getImages() {
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setSearchView() {
+        binding.searchView.setOnTouchListener { v, _ ->
+            v.isFocusableInTouchMode = true
+            false
+        }
+        binding.searchView.setOnEditorActionListener(TextView.OnEditorActionListener { _, actionId, _ ->
+
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                searchImage(binding.searchView.text.toString().trim())
+                return@OnEditorActionListener true
+            }
+            false
+        })
+
+
+    }
+
+    private fun searchImage(query: String) {
+        hideSoftKeyboard()
         job?.cancel()
         job = lifecycleScope.launch {
-            viewModel.getImages().collect {
+
+            viewModel.searchImage(query).collect {
                 adapter.submitData(it)
             }
 
         }
+    }
+
+    private fun hideSoftKeyboard() {
+        val view = requireActivity().currentFocus
+
+        view?.let {
+            val imm =
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+
     }
 
     private fun setAdapter() {
@@ -94,39 +128,11 @@ class ImagesListFragment : DaggerFragment(R.layout.fragment_images_list) {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        when (item.itemId) {
-            R.id.destination_search -> navigateSearch()
-            R.id.scroll_down -> scrollDown()
-            R.id.scroll_up -> scrollUp()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun navigateSearch() {
-        binding.root.findNavController().navigate(ImagesListFragmentDirections.toSearchFragment())
-    }
-
-    private fun scrollUp() {
-        binding.imagesList.scrollToPosition(0)
-    }
-
-    private fun scrollDown() {
-        binding.imagesList.scrollToPosition(adapter.itemCount - 1)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.main_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
     private fun navigate(imagesResponse: ImagesResponse, imageView: ImageView) {
-        // val extras = FragmentNavigatorExtras(imageView to imagesResponse.urls.regular) not working
-
-        val action = ImagesListFragmentDirections.toSingleImageFragment(imagesResponse)
+        val action = SearchFragmentDirections.toSingleImageFragment(imagesResponse)
         binding.root.findNavController()
             .navigate(action)
     }
+
 
 }

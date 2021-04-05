@@ -11,6 +11,9 @@
         <action
             android:id="@+id/to_singleImageFragment"
             app:destination="@id/singleImageFragment" />
+        <action
+            android:id="@+id/to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/singleImageFragment"
@@ -21,6 +24,15 @@
             android:name="image"
             app:argType="dev.ronnie.imageloaderdagger2.data.model.ImagesResponse"
             app:nullable="false" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="dev.ronnie.imageloaderdagger2.presentation.fragments.SearchFragment"
+        android:label="SearchFragment">
+        <action
+            android:id="@+id/to_singleImageFragment"
+            app:destination="@id/singleImageFragment" />
 
     </fragment>
 </navigation>

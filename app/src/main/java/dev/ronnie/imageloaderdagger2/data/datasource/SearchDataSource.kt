@@ -11,7 +11,7 @@ import java.io.IOException
 /**
  *created by Ronnie Otieno on 04-Apr-21.
  **/
-class DataSource(private val unSplashService: UnSplashService) :
+class SearchDataSource(private val unSplashService: UnSplashService, private val query: String) :
     PagingSource<Int, ImagesResponse>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ImagesResponse> {
@@ -19,11 +19,11 @@ class DataSource(private val unSplashService: UnSplashService) :
         val page = params.key ?: STARTING_PAGE
 
         return try {
-            val data = unSplashService.getImages(page, params.loadSize)
+            val data = unSplashService.searchImages(query, page, params.loadSize)
             LoadResult.Page(
-                data = data,
+                data = data.results,
                 prevKey = if (page == STARTING_PAGE) null else page - 1,
-                nextKey = if (data.isEmpty()) null else page + 1
+                nextKey = if (page >= data.total_pages) null else page + 1
             )
 
         } catch (throwable: Throwable) {

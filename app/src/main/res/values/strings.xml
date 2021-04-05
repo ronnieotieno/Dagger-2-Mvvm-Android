@@ -4,4 +4,8 @@
     <string name="likes">%1$d likes</string>
     <string name="by">By %1$s</string>
     <string name="retry">Retry</string>
+    <string name="search">Search</string>
+    <string name="scroll_down">Scroll Down</string>
+    <string name="scroll_up">Scroll Up</string>
+
 </resources>

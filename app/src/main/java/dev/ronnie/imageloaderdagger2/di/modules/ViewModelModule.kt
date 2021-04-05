@@ -7,6 +7,7 @@ import dagger.MapKey
 import dagger.Module
 import dagger.multibindings.IntoMap
 import dev.ronnie.imageloaderdagger2.presentation.viewmodels.ImagesListViewModel
+import dev.ronnie.imageloaderdagger2.presentation.viewmodels.SearchViewModel
 import dev.ronnie.imageloaderdagger2.presentation.viewmodels.SingleImageViewModel
 import dev.ronnie.imageloaderdagger2.presentation.viewmodels.ViewModelFactory
 import kotlin.reflect.KClass
@@ -23,6 +24,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SingleImageViewModel::class)
     abstract fun bindSingleImageViewModel(singleImageViewModel: SingleImageViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SearchViewModel::class)
+    abstract fun bindSearchViewModel(searchViewModel: SearchViewModel): ViewModel
 
 
     @Binds

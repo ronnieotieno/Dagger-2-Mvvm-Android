@@ -24,8 +24,8 @@ navigation between fragments
 
 
 ## Screenshots
-|<img src="screenshots/home.jpg" width=200/>|<img src="screenshots/detail.jpg" width=200/>|<img src="screenshots/home_dark.jpg" width=200/>|
-|:----:|:----:|:----:|
+|<img src="screenshots/home.jpg" width=200/>|<img src="screenshots/detail.jpg" width=200/>|<img src="screenshots/home_dark.jpg" width=200/>|<img src="screenshots/search.jpg" width=200/>|
+|:----:|:----:|:----:|:----:|
 
 ## Demo
 <img src="demo/demo.gif" width=300/>

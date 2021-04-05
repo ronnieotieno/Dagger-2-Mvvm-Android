@@ -1,6 +1,7 @@
 package dev.ronnie.imageloaderdagger2.api
 
 import dev.ronnie.imageloaderdagger2.data.model.ImagesResponse
+import dev.ronnie.imageloaderdagger2.data.model.SearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -14,4 +15,12 @@ interface UnSplashService {
         @Query("per_page") limit: Int
 
     ): List<ImagesResponse>
+
+    @GET("search/photos")
+    suspend fun searchImages(
+        @Query("query") query: String,
+        @Query("page") page: Int,
+        @Query("per_page") limit: Int
+
+    ): SearchResponse
 }
