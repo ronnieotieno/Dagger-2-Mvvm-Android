@@ -49,6 +49,7 @@ class ImagesListFragment : DaggerFragment(R.layout.fragment_images_list) {
         viewModelFactory
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

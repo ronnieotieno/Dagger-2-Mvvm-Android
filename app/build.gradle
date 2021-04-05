@@ -104,4 +104,6 @@ dependencies {
 
     //get Dominant image color
     implementation 'androidx.palette:palette-ktx:1.0.0'
+
+    implementation 'com.github.Toxa2033:ScaleAndSwipeDismissImageView:v0.7'
 }
