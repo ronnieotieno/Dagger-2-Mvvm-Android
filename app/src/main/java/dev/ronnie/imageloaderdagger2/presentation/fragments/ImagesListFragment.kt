@@ -67,7 +67,6 @@ class ImagesListFragment : DaggerFragment(R.layout.fragment_images_list) {
     private fun getImages() {
         job?.cancel()
         job = lifecycleScope.launch {
-
             viewModel.getImages().collect {
                 adapter.submitData(it)
             }
