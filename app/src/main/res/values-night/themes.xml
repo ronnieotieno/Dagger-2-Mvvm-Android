@@ -17,6 +17,9 @@
 
     <style name="AppBarOverTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
         <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:colorBackground">@color/white</item>
+        <item name="android:drawableTint">@color/white</item>
+
 
     </style>
 

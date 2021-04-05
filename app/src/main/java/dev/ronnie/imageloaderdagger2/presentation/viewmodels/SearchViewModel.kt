@@ -29,7 +29,6 @@ class SearchViewModel @Inject constructor(private val repository: Repository, ap
             repository.searchImage(query).cachedIn(viewModelScope)
         currentResult = newResult
         setCurrentQuery(query)
-
         return newResult
     }
 

@@ -16,7 +16,10 @@
 
     <style name="AppBarOverTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
         <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:colorBackground">@color/black</item>
+        <item name="android:drawableTint">@color/black</item>
     </style>
+
 
     <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_day</item>

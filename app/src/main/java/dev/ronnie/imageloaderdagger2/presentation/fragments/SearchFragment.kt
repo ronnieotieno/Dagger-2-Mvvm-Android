@@ -3,7 +3,9 @@ package dev.ronnie.imageloaderdagger2.presentation.fragments
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -88,10 +90,30 @@ class SearchFragment : DaggerFragment(R.layout.fragment_search) {
             false
         })
 
+        binding.searchView.setOnTouchListener(OnTouchListener { _, event ->
+
+            val drawableRight = 2
+
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (event.rawX >= binding.searchView.right - binding.searchView.compoundDrawables[drawableRight].bounds.width()
+                ) {
+                    binding.searchView.text = null
+                    binding.searchView.requestFocus()
+                    val imm =
+                        requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+                    imm!!.showSoftInput(binding.searchView, InputMethodManager.SHOW_IMPLICIT)
+                    return@OnTouchListener true
+                }
+            }
+            false
+        })
+
 
     }
 
     private fun searchImage(query: String) {
+
+        if (query.isEmpty()) return
         hideSoftKeyboard()
         job?.cancel()
         job = lifecycleScope.launch {

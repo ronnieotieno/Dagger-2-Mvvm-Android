@@ -33,6 +33,7 @@
                     android:layout_margin="5dp"
                     android:background="@null"
                     android:drawableStart="@drawable/ic_search"
+                    android:drawableEnd="@drawable/ic_close"
                     android:drawableTint="#cdcdcd"
                     android:focusableInTouchMode="true"
                     android:hint="Search"
