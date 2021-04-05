@@ -48,7 +48,8 @@
             android:layout_marginStart="10dp"
             android:text="@{image.description}"
             android:textColor="@color/white"
-            android:textStyle="bold"
+            android:textSize="13sp"
+            android:textStyle="normal"
             app:layout_constraintBottom_toTopOf="@+id/by"
             app:layout_constraintStart_toStartOf="parent" />
 
