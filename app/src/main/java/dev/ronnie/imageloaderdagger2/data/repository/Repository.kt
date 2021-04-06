@@ -13,17 +13,17 @@ import javax.inject.Inject
  **/
 class Repository @Inject constructor(private val unSplashService: UnSplashService) {
 
-    fun getImages() = Pager(
+    fun getImages(orderBy:String) = Pager(
         config = PagingConfig(enablePlaceholders = false, pageSize = LOAD_SIZE),
         pagingSourceFactory = {
-            ImagesDataSource(unSplashService)
+            ImagesDataSource(unSplashService, orderBy)
         }
     ).flow
 
-    fun searchImage(query: String) = Pager(
+    fun searchImage(query: String,orderBy:String) = Pager(
         config = PagingConfig(enablePlaceholders = false, pageSize = LOAD_SIZE),
         pagingSourceFactory = {
-            SearchDataSource(unSplashService, query)
+            SearchDataSource(unSplashService, query, orderBy)
         }
     ).flow
 

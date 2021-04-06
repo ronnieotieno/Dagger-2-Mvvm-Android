@@ -71,7 +71,6 @@ class SearchFragment : DaggerFragment(R.layout.fragment_search) {
             viewModel.currentQuery()?.let { searchImage(it); binding.searchView.setText(it) }
             hasInitiatedInitialCall = true
         }
-
     }
 
 
@@ -117,7 +116,6 @@ class SearchFragment : DaggerFragment(R.layout.fragment_search) {
         hideSoftKeyboard()
         job?.cancel()
         job = lifecycleScope.launch {
-
             viewModel.searchImage(query).collect {
                 adapter.submitData(it)
             }

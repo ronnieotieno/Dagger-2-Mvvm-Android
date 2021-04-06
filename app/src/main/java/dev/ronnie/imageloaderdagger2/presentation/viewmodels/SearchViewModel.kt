@@ -25,8 +25,9 @@ class SearchViewModel @Inject constructor(private val repository: Repository, ap
     private var currentResult: Flow<PagingData<ImagesResponse>>? = null
 
     fun searchImage(query: String): Flow<PagingData<ImagesResponse>> {
+        val orderBy = listOf("latest", "relevant").random()
         val newResult: Flow<PagingData<ImagesResponse>> =
-            repository.searchImage(query).cachedIn(viewModelScope)
+            repository.searchImage(query, orderBy).cachedIn(viewModelScope)
         currentResult = newResult
         setCurrentQuery(query)
         return newResult

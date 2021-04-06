@@ -1,12 +1,10 @@
 package dev.ronnie.imageloaderdagger2.presentation.fragments
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import com.google.android.material.transition.MaterialFadeThrough
 import dagger.android.support.DaggerFragment
 import dev.ronnie.imageloaderdagger2.R
 import dev.ronnie.imageloaderdagger2.databinding.FragmentSingleImageBinding
@@ -41,17 +39,11 @@ class SingleImageFragment : DaggerFragment(R.layout.fragment_single_image) {
         binding.viewmodel = viewModel
 
         setImageView()
-
     }
 
     private fun setImageView() {
         val scaleImage = binding.imageView
-        scaleImage.setBackgroundColor(Color.BLACK)
-        scaleImage.setZoomEnabled(true)
-        scaleImage.setDismissEnabled(true)
-
-        scaleImage.setOnDismissRateChange { rate, isCanNowDismiss ->
-
+        scaleImage.setOnDismissRateChange { _, isCanNowDismiss ->
             if (isCanNowDismiss) {
                 binding.root.findNavController().navigateUp()
             }

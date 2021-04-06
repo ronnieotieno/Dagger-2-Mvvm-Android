@@ -16,9 +16,11 @@ import javax.inject.Inject
 class ImagesListViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
     private var currentResult: Flow<PagingData<ImagesResponse>>? = null
+
     fun getImages(): Flow<PagingData<ImagesResponse>> {
+        val orderBy = listOf("latest", "oldest", "popular").random()
         val newResult: Flow<PagingData<ImagesResponse>> =
-            repository.getImages().cachedIn(viewModelScope)
+            repository.getImages(orderBy).cachedIn(viewModelScope)
         currentResult = newResult
         return newResult
     }
