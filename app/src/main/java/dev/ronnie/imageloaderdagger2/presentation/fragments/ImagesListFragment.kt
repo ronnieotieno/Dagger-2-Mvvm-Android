@@ -42,12 +42,7 @@ class ImagesListFragment : DaggerFragment(R.layout.fragment_images_list) {
     private var job: Job? = null
 
     private val adapter =
-        ImagesAdapter { imagesResponse, imageView ->
-            navigate(
-                imagesResponse,
-                imageView
-            )
-        }
+        ImagesAdapter { imagesResponse, imageView -> navigate(imagesResponse, imageView) }
 
     private val viewModel: ImagesListViewModel by viewModels {
         viewModelFactory
@@ -57,7 +52,7 @@ class ImagesListFragment : DaggerFragment(R.layout.fragment_images_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentImagesListBinding.bind(view)
-        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar);
+        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
         setHasOptionsMenu(true)
 
         setAdapter()
@@ -117,8 +112,8 @@ class ImagesListFragment : DaggerFragment(R.layout.fragment_images_list) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.main_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.main_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     private fun navigate(imagesResponse: ImagesResponse, imageView: ImageView) {

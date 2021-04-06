@@ -1,13 +1,11 @@
 package dev.ronnie.imageloaderdagger2.presentation.fragments
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +22,8 @@ import dev.ronnie.imageloaderdagger2.databinding.FragmentSearchBinding
 import dev.ronnie.imageloaderdagger2.presentation.adapters.ImagesAdapter
 import dev.ronnie.imageloaderdagger2.presentation.adapters.LoadingStateAdapter
 import dev.ronnie.imageloaderdagger2.presentation.viewmodels.SearchViewModel
+import dev.ronnie.imageloaderdagger2.utils.hideSoftKeyboard
+import dev.ronnie.imageloaderdagger2.utils.showKeyBoard
 import dev.ronnie.imageloaderdagger2.utils.toast
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -96,11 +96,7 @@ class SearchFragment : DaggerFragment(R.layout.fragment_search) {
             if (event.action == MotionEvent.ACTION_UP) {
                 if (event.rawX >= binding.searchView.right - binding.searchView.compoundDrawables[drawableRight].bounds.width()
                 ) {
-                    binding.searchView.text = null
-                    binding.searchView.requestFocus()
-                    val imm =
-                        requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-                    imm!!.showSoftInput(binding.searchView, InputMethodManager.SHOW_IMPLICIT)
+                    requireContext().showKeyBoard(binding.searchView)
                     return@OnTouchListener true
                 }
             }
@@ -110,10 +106,11 @@ class SearchFragment : DaggerFragment(R.layout.fragment_search) {
 
     }
 
+
     private fun searchImage(query: String) {
 
         if (query.isEmpty()) return
-        hideSoftKeyboard()
+        requireActivity().hideSoftKeyboard()
         job?.cancel()
         job = lifecycleScope.launch {
             viewModel.searchImage(query).collect {
@@ -123,16 +120,6 @@ class SearchFragment : DaggerFragment(R.layout.fragment_search) {
         }
     }
 
-    private fun hideSoftKeyboard() {
-        val view = requireActivity().currentFocus
-
-        view?.let {
-            val imm =
-                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
-        }
-
-    }
 
     private fun setAdapter() {
         binding.imagesList.adapter = adapter.withLoadStateFooter(

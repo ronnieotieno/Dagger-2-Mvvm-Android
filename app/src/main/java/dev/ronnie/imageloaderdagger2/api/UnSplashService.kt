@@ -14,7 +14,6 @@ interface UnSplashService {
         @Query("order_by") orderBy: String,
         @Query("page") page: Int,
         @Query("per_page") limit: Int
-
     ): List<ImagesResponse>
 
     @GET("search/photos")
@@ -23,6 +22,5 @@ interface UnSplashService {
         @Query("order_by") orderBy: String,
         @Query("page") page: Int,
         @Query("per_page") limit: Int
-
     ): SearchResponse
 }
