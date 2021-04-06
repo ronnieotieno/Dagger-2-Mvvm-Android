@@ -99,6 +99,11 @@ class ImagesListFragment : DaggerFragment(R.layout.fragment_images_list) {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
     private fun navigateSearch() {
         binding.root.findNavController().navigate(ImagesListFragmentDirections.toSearchFragment())
     }
@@ -111,10 +116,6 @@ class ImagesListFragment : DaggerFragment(R.layout.fragment_images_list) {
         binding.imagesList.scrollToPosition(adapter.itemCount - 1)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.main_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
 
     private fun navigate(imagesResponse: ImagesResponse, imageView: ImageView) {
         // val extras = FragmentNavigatorExtras(imageView to imagesResponse.urls.regular) not working

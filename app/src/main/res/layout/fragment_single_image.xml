@@ -15,6 +15,7 @@
         android:layout_height="match_parent"
         android:background="@color/dark_bg">
 
+
         <com.github.toxa2033.ScaleImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
@@ -30,6 +31,17 @@
             app:layout_constraintTop_toTopOf="parent"
             app:shouldRound="@{viewmodel.shouldRound}"
             app:zoom_enabled="true" />
+
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/download_menu"
+            app:title="" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

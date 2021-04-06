@@ -15,8 +15,7 @@ class SearchDataSource(
     private val unSplashService: UnSplashService,
     private val query: String,
     private val orderBy: String
-) :
-    PagingSource<Int, ImagesResponse>() {
+) : PagingSource<Int, ImagesResponse>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ImagesResponse> {
 

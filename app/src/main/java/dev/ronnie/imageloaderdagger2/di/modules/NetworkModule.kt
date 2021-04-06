@@ -3,9 +3,11 @@ package dev.ronnie.imageloaderdagger2.di.modules
 import android.app.Application
 import dagger.Module
 import dagger.Provides
+import dev.ronnie.imageloaderdagger2.BuildConfig
 import dev.ronnie.imageloaderdagger2.api.UnSplashService
 import dev.ronnie.imageloaderdagger2.utils.Config
 import okhttp3.*
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
@@ -21,10 +23,13 @@ import javax.inject.Singleton
 @Module
 object NetworkModule {
 
+    private val loggingInterceptor =
+        HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
+
     @Singleton
     @Provides
     fun providesOkhttp(cache: Cache): OkHttpClient {
-        return OkHttpClient.Builder()
+        val builder = OkHttpClient.Builder()
             .addNetworkInterceptor(cacheInterceptor)
             .cache(cache)
             .addInterceptor { chain: Interceptor.Chain ->
@@ -32,7 +37,9 @@ object NetworkModule {
                     .addHeader("Authorization", "Client-ID " + Config.unsplash_access_key)
                     .build()
                 chain.proceed(newRequest)
-            }.build()
+            }
+        if (BuildConfig.DEBUG) builder.addInterceptor(loggingInterceptor)
+        return builder.build()
     }
 
     @Singleton
