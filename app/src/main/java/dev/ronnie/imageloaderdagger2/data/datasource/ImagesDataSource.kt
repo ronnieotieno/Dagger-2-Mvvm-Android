@@ -15,7 +15,6 @@ class ImagesDataSource(private val unSplashService: UnSplashService, private val
     PagingSource<Int, ImagesResponse>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ImagesResponse> {
-
         val page = params.key ?: STARTING_PAGE
 
         return try {
