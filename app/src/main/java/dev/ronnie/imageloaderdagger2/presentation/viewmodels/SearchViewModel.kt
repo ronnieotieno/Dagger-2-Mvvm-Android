@@ -35,11 +35,11 @@ class SearchViewModel @Inject constructor(private val repository: Repository, ap
     }
 
     private fun setCurrentQuery(query: String) {
-        val editor = sharedPreferences.edit()
-        editor.putString("query", query)
-        editor.apply()
+        sharedPreferences.edit().apply {
+            putString("query", query)
+            apply()
+        }
     }
-
     fun currentQuery(): String? {
         return sharedPreferences.getString("query", null)
     }

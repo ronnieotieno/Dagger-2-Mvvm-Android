@@ -9,6 +9,7 @@ import android.media.MediaScannerConnection
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -62,27 +63,32 @@ class SingleImageViewModel @Inject constructor(
                     resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
                 fos = imageUri?.let { resolver.openOutputStream(it) }
             } else {
-                val imagesDir: String = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_DCIM
-                ).toString() + File.separator.toString() + "UnsplashImages"
-                imageFile = File(imagesDir)
+                // val root = Environment.getExternalStorageDirectory().toString()
+                val myDir = File(
+                    Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_DCIM
+                    ).toString() + File.separator.toString() + "UnsplashImages"
+                )
+                myDir.mkdirs()
+
+                imageFile = File(myDir, "Image${System.currentTimeMillis()}.png")
+                if (imageFile.exists()) imageFile.delete()
+                imageFile.createNewFile()
                 if (!imageFile.exists()) {
-                    imageFile.mkdir()
+                    imageFile.mkdirs()
                 }
-                imageFile = File(imagesDir, "Image${System.currentTimeMillis()}.png")
-                fos = FileOutputStream(imageFile)
-            }
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
-            fos?.flush()
-            fos?.close()
-            if (imageFile != null) {
                 MediaScannerConnection.scanFile(
                     app.applicationContext,
                     arrayOf(imageFile.toString()),
                     null,
                     null
                 )
+                fos = FileOutputStream(imageFile)
             }
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
+            fos?.flush()
+            fos?.close()
+
             withContext(Dispatchers.Main) {
                 _notifyDownloading.value = HAS_SAVED
                 app.applicationContext.toast("Image saved successfully")
@@ -92,7 +98,9 @@ class SingleImageViewModel @Inject constructor(
 
                 }
             }
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+
+            Log.d("SavingImage", e.toString())
             withContext(Dispatchers.Main) {
                 _notifyDownloading.value = ERROR_DOWNLOADING
                 app.applicationContext.toast("There was a problem saving the image")

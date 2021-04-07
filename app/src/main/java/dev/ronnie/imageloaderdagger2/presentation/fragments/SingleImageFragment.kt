@@ -1,10 +1,14 @@
 package dev.ronnie.imageloaderdagger2.presentation.fragments
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.viewModels
@@ -41,6 +45,22 @@ class SingleImageFragment : DaggerFragment(R.layout.fragment_single_image),
     }
 
     private var image: ImagesResponse? = null
+    private val chooseQualityDialog = ChooseQualityDialog()
+
+    private val storagePermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            when {
+                granted -> {
+                    chooseQualityDialog.show(childFragmentManager, null)
+
+                }
+                shouldShowRequestPermissionRationale(Manifest.permission.READ_PHONE_STATE) -> {
+                    showUserWhyPermission()
+                }
+                else -> requireContext().toast("Permission denied")
+
+            }
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -72,11 +92,17 @@ class SingleImageFragment : DaggerFragment(R.layout.fragment_single_image),
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        ChooseQualityDialog().show(childFragmentManager, null)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            chooseQualityDialog.show(childFragmentManager, null)
+        } else {
+            storagePermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+
         return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+
         inflater.inflate(R.menu.download_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -126,6 +152,17 @@ class SingleImageFragment : DaggerFragment(R.layout.fragment_single_image),
     override fun onDestroy() {
         super.onDestroy()
         snackBar?.dismiss()
+    }
+
+    private fun showUserWhyPermission() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Write storage permission needed")
+            .setMessage("This permission is required inorder to save the image to the gallery")
+            .setPositiveButton(
+                "Okay"
+            ) { _, _ ->
+                storagePermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
     }
 
 }
