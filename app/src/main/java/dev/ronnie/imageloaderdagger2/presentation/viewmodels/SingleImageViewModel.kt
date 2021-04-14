@@ -63,7 +63,6 @@ class SingleImageViewModel @Inject constructor(
                     resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
                 fos = imageUri?.let { resolver.openOutputStream(it) }
             } else {
-                // val root = Environment.getExternalStorageDirectory().toString()
                 val myDir = File(
                     Environment.getExternalStoragePublicDirectory(
                         Environment.DIRECTORY_DCIM

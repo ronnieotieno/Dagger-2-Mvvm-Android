@@ -32,8 +32,7 @@ import javax.inject.Inject
  **/
 class ImagesListFragment : DaggerFragment(R.layout.fragment_images_list) {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+
 
     private var hasInitiatedInitialCall = false
 
@@ -44,6 +43,8 @@ class ImagesListFragment : DaggerFragment(R.layout.fragment_images_list) {
     private val adapter =
         ImagesAdapter { imagesResponse, imageView -> navigate(imagesResponse, imageView) }
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: ImagesListViewModel by viewModels {
         viewModelFactory
     }
