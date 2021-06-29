@@ -53,6 +53,7 @@ class SingleImageViewModel @Inject constructor(
                 contentValues.put(
                     MediaStore.MediaColumns.DISPLAY_NAME,
                     "Image${System.currentTimeMillis()}"
+
                 )
                 contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
                 contentValues.put(
