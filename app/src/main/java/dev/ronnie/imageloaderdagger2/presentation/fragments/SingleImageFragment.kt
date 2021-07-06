@@ -162,7 +162,7 @@ class SingleImageFragment : DaggerFragment(R.layout.fragment_single_image),
                 "Okay"
             ) { _, _ ->
                 storagePermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            }
+            }.create().show()
     }
 
 }
