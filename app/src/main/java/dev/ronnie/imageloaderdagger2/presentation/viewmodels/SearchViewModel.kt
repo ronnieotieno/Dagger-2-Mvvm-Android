@@ -40,6 +40,7 @@ class SearchViewModel @Inject constructor(private val repository: Repository, ap
             apply()
         }
     }
+
     fun currentQuery(): String? {
         return sharedPreferences.getString("query", null)
     }

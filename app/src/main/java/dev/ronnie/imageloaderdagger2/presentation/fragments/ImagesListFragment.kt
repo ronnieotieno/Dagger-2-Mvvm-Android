@@ -33,7 +33,6 @@ import javax.inject.Inject
 class ImagesListFragment : DaggerFragment(R.layout.fragment_images_list) {
 
 
-
     private var hasInitiatedInitialCall = false
 
     private lateinit var binding: FragmentImagesListBinding

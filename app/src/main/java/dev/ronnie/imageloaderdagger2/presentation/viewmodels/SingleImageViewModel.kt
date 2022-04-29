@@ -77,6 +77,7 @@ class SingleImageViewModel @Inject constructor(
                 if (!imageFile.exists()) {
                     imageFile.mkdirs()
                 }
+
                 MediaScannerConnection.scanFile(
                     app.applicationContext,
                     arrayOf(imageFile.toString()),
@@ -125,7 +126,6 @@ class SingleImageViewModel @Inject constructor(
                 withContext(Dispatchers.Main) {
                     _notifyDownloading.value = HAS_DOWNLOADED
                 }
-
             }
         } catch (e: IOException) {
             withContext(Dispatchers.Main) {
